@@ -12,8 +12,19 @@ namespace IFPAApiWrapper
     /// <seealso href="https://www.ifpapinball.com/api/documentation/">IFPA API Documentation</seealso>
     public class IFPAApiClient : IIFPAApiClient
     {
+        /// <summary>
+        /// The HTTP client used for requests.
+        /// </summary>
         private readonly HttpClient _httpClient;
+
+        /// <summary>
+        /// The API key for authentication.
+        /// </summary>
         private readonly string _apiKey;
+
+        /// <summary>
+        /// The base URL for the IFPA API.
+        /// </summary>
         private const string BaseUrl = "https://api.ifpapinball.com/";
 
         /// <summary>

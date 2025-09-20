@@ -13,6 +13,9 @@ namespace MatchPlayApiWrapper
     /// <seealso href="https://api.matchplay.com/docs">MatchPlay API Documentation</seealso>
     public class MatchPlayApiClient
     {
+        /// <summary>
+        /// The HTTP client used for requests.
+        /// </summary>
         private readonly HttpClient _httpClient;
 
         /// <summary>
