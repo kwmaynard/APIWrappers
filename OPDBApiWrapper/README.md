@@ -1,33 +1,24 @@
 # OPDBApiWrapper
 
-OPDBApiWrapper is a C# class library that provides a wrapper for the OPDB API. This library is designed to simplify the interaction with the OPDB API by providing strongly typed models and a straightforward interface for making API calls.
+The [Open Pinball Database (OPDB)](https://opdb.org/) is a searchable archive of pinball machines with a focus on providing a solid API for software developers who wish to incorporate pinball machine data into their apps. It is a free resource, both free as in beer and free as in speech. The service is provided free of charge and can be freely used by anyone for any purpose.
 
-## Features
-
-- Targeted for .NET Standard 2.0
-- Utilizes C# language version 7.3
-- Includes support for JSON serialization and deserialization using Newtonsoft.Json
-- Provides a clean and easy-to-use interface for accessing OPDB API endpoints
+OPDBApiWrapper is a C#, .net standard 2.0 class library that provides a wrapper for the OPDB API. This library is designed to simplify the interaction with the OPDB API by providing strongly typed models and a straightforward interface for making API calls. To use the OPDB API, an API token must be obtained.
 
 ## Installation
-
-To use the OPDBApiWrapper in your project, add a reference to the library in your project file:
-
-```xml
-<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-```
+Add the project to your solution and reference it in your application.
 
 ## Usage
-
-1. Initialize the `OPDBApiWrapper` class.
-2. Use the provided methods to interact with the OPDB API.
-
-### Example
-
 ```csharp
-var apiWrapper = new OPDBApiWrapper();
-var response = await apiWrapper.SomeApiMethodAsync();
+using OPDBApiWrapper;
+
+var apiToken = "YOUR_OPDB_API_TOKEN";
+var client = new OPDBApiClient(apiToken);
+
+var machine = await client.GetMachineByIpdbIdAsync(1234);
 ```
+
+## API Reference
+See the official [OPDB API Documentation](https://opdb.org/api) for details on endpoints and parameters.
 
 ## Contributing
 

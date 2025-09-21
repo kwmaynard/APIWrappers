@@ -31,12 +31,11 @@ namespace IFPAApiWrapper
         /// Initializes a new instance of the <see cref="IFPAApiClient"/> class.
         /// </summary>
         /// <param name="apiKey">The IFPA API key.</param>
-        /// <param name="httpClient">Optional HttpClient instance. If null, a new instance is created.</param>
-        public IFPAApiClient(string apiKey, HttpClient httpClient = null)
+        /// <exception cref="ArgumentNullException">Thrown if apiKey is null.</exception>
+        public IFPAApiClient(string apiKey)
         {
             _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
-            _httpClient = httpClient ?? new HttpClient();
-            _httpClient.BaseAddress = new Uri(BaseUrl);
+            _httpClient = new HttpClient { BaseAddress = new Uri(BaseUrl) };
             _httpClient.DefaultRequestHeaders.Add("X-API-Key", _apiKey);
         }
 

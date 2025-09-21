@@ -1,43 +1,31 @@
 # IFPAApiWrapper
 
-A C# client library for accessing the IFPA Pinball API.
+The objective of the [International Flipper Pinball Association (IFPA)](https://www.ifpapinball.com/) is to serve as the governing body for pinball as a competitive sport, through the sanctioning and organizing of events at the Local, State, National and International levels.
 
-## Overview
-This library provides an easy way to interact with the [IFPA Pinball API](https://www.ifpapinball.com/api/documentation/) to retrieve information about players, tournaments, rankings, directors, and statistics.
-
-## Features
-- Get details for players, tournaments, directors, and series
-- Search for players, directors, and tournaments
-- Retrieve rankings and statistics by country, state, region, and series
-- All API endpoints are wrapped in async methods
+IFPAApiWrapper is a C#, .net standard 2.0 class library that provides a wrapper for the IFPA API. This library is designed to simplify the interaction with the IPFA API by providing strongly typed models and a straightforward interface for making API calls. To use the IFPA API, an API key must be obtained.
 
 ## Installation
 Add the project to your solution and reference it in your application.
 
 ## Usage
-```
-csharp
+```csharp
 using IFPAApiWrapper;
-using System.Net.Http;
 
 var apiKey = "YOUR_IFPA_API_KEY";
 var client = new IFPAApiClient(apiKey);
 
-// Get player details
 var player = await client.GetPlayerAsync(1234);
 
-// Search for tournaments
 var tournaments = await client.SearchTournamentsAsync(name: "Pinburgh");
 ```
 
-## API Documentation
+## API Reference
 See the official [IFPA API Documentation](https://www.ifpapinball.com/api/documentation/) for details on endpoints and parameters.
 
-## Models
-All responses are mapped to strongly-typed model classes in the `Models` folder.
-
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue for any enhancements or bug fixes.
 
 ## License
-MIT License.
+
+This project is licensed under the MIT License. See the LICENSE file for more details.

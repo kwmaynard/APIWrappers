@@ -19,13 +19,24 @@ namespace MatchPlayApiWrapper
         private readonly HttpClient _httpClient;
 
         /// <summary>
+        /// The bearer token for authentication.
+        /// </summary>
+        private readonly string _bearerToken;
+
+        /// <summary>
+        /// The base URL for the OPDB API.
+        /// </summary>
+        private const string BaseUrl = "https://app.matchplay.events/api/";
+
+        /// <summary>
         /// Initializes a new instance of the MatchPlayApiClient class.
         /// </summary>
-        /// <param name="baseUrl">The base URL of the MatchPlay API.</param>
         /// <param name="bearerToken">The bearer token for authentication.</param>
-        public MatchPlayApiClient(string baseUrl, string bearerToken)
+        /// <exception cref="ArgumentNullException">Thrown if apiToken is null.</exception>
+        public MatchPlayApiClient(string bearerToken)
         {
-            _httpClient = new HttpClient { BaseAddress = new Uri(baseUrl) };
+            _bearerToken = bearerToken ?? throw new ArgumentNullException(nameof(bearerToken));
+            _httpClient = new HttpClient { BaseAddress = new Uri(BaseUrl) };
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
         }
 
@@ -35,7 +46,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of Tournament POCOs.</returns>
         public async Task<List<Models.Tournament>> GetTournamentsAsync()
         {
-            var response = await _httpClient.GetAsync("/api/tournaments");
+            var response = await _httpClient.GetAsync("tournaments");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.Tournament>>(json) ?? new List<Models.Tournament>();
@@ -48,7 +59,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A Tournament POCO.</returns>
         public async Task<Models.Tournament> GetTournamentByIdAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Models.Tournament>(json);
@@ -61,7 +72,7 @@ namespace MatchPlayApiWrapper
         /// <returns>An AmazingRace POCO.</returns>
         public async Task<Models.AmazingRace> GetAmazingRaceAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/amazing-race");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/amazing-race");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Models.AmazingRace>(json);
@@ -74,7 +85,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A Frenzy POCO.</returns>
         public async Task<Models.Frenzy> GetFrenzyAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/frenzy");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/frenzy");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Models.Frenzy>(json);
@@ -87,7 +98,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A MaxMatchplay POCO.</returns>
         public async Task<Models.MaxMatchplay> GetMaxMatchplayAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/max-matchplay");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/max-matchplay");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Models.MaxMatchplay>(json);
@@ -100,7 +111,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of SinglePlayerGame POCOs.</returns>
         public async Task<List<Models.SinglePlayerGame>> GetSinglePlayerGamesAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/single-player-games");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/single-player-games");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.SinglePlayerGame>>(json) ?? new List<Models.SinglePlayerGame>();
@@ -113,7 +124,7 @@ namespace MatchPlayApiWrapper
         /// <returns>CSV string of single player games.</returns>
         public async Task<string> GetSinglePlayerGamesCsvAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/single-player-games/csv");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/single-player-games/csv");
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
         }
@@ -125,7 +136,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of TopScore POCOs.</returns>
         public async Task<List<Models.TopScore>> GetSinglePlayerGamesTopScoresAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/single-player-games/top-scores");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/single-player-games/top-scores");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.TopScore>>(json) ?? new List<Models.TopScore>();
@@ -139,7 +150,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A SinglePlayerGame POCO.</returns>
         public async Task<Models.SinglePlayerGame> GetSinglePlayerGameByIdAsync(int tournamentId, int gameId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/single-player-games/{gameId}");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/single-player-games/{gameId}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Models.SinglePlayerGame>(json);
@@ -152,7 +163,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of Card POCOs.</returns>
         public async Task<List<Models.Card>> GetCardsAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/cards");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/cards");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.Card>>(json) ?? new List<Models.Card>();
@@ -166,7 +177,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A Card POCO.</returns>
         public async Task<Models.Card> GetCardByIdAsync(int tournamentId, int cardId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/cards/{cardId}");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/cards/{cardId}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Models.Card>(json);
@@ -179,7 +190,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of Queue POCOs.</returns>
         public async Task<List<Models.Queue>> GetQueuesAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/queues");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/queues");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.Queue>>(json) ?? new List<Models.Queue>();
@@ -192,7 +203,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A MatchplayStats POCO.</returns>
         public async Task<Models.MatchplayStats> GetMatchplayStatsAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/stats/matchplay");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/stats/matchplay");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Models.MatchplayStats>(json);
@@ -205,7 +216,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of RoundStats POCOs.</returns>
         public async Task<List<Models.RoundStats>> GetRoundStatsAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/stats/rounds");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/stats/rounds");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.RoundStats>>(json) ?? new List<Models.RoundStats>();
@@ -218,7 +229,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of ArenaStats POCOs.</returns>
         public async Task<List<Models.ArenaStats>> GetArenaStatsAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/stats/arenas");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/stats/arenas");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.ArenaStats>>(json) ?? new List<Models.ArenaStats>();
@@ -231,7 +242,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of PlayerStats POCOs.</returns>
         public async Task<List<Models.PlayerStats>> GetPlayerStatsAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/stats/players");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/stats/players");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.PlayerStats>>(json) ?? new List<Models.PlayerStats>();
@@ -244,7 +255,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of MatchStats POCOs.</returns>
         public async Task<List<Models.MatchStats>> GetMatchStatsAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/stats/matches");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/stats/matches");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.MatchStats>>(json) ?? new List<Models.MatchStats>();
@@ -257,7 +268,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A BestGameStats POCO.</returns>
         public async Task<Models.BestGameStats> GetBestGameStatsAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/stats/bestgame");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/stats/bestgame");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Models.BestGameStats>(json);
@@ -270,7 +281,7 @@ namespace MatchPlayApiWrapper
         /// <returns>CSV string of players.</returns>
         public async Task<string> GetPlayersCsvAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/players/csv");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/players/csv");
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
         }
@@ -282,7 +293,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of ArenaBgSummary POCOs.</returns>
         public async Task<List<Models.ArenaBgSummary>> GetArenaBgSummaryAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/arenas/bgsummary");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/arenas/bgsummary");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.ArenaBgSummary>>(json) ?? new List<Models.ArenaBgSummary>();
@@ -296,7 +307,7 @@ namespace MatchPlayApiWrapper
         /// <returns>An ArenaBgDetails POCO.</returns>
         public async Task<Models.ArenaBgDetails> GetArenaBgDetailsAsync(int tournamentId, int arenaId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/arenas/{arenaId}/bgdetails");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/arenas/{arenaId}/bgdetails");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Models.ArenaBgDetails>(json);
@@ -309,7 +320,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of Game POCOs.</returns>
         public async Task<List<Models.Game>> GetGamesAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/games");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/games");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.Game>>(json) ?? new List<Models.Game>();
@@ -322,7 +333,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of Game POCOs.</returns>
         public async Task<List<Models.Game>> GetActiveGamesAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/games?round=activeOrLatest");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/games?round=activeOrLatest");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.Game>>(json) ?? new List<Models.Game>();
@@ -335,7 +346,7 @@ namespace MatchPlayApiWrapper
         /// <returns>CSV string of games.</returns>
         public async Task<string> GetGamesCsvAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/games/csv");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/games/csv");
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
         }
@@ -348,7 +359,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A Game POCO.</returns>
         public async Task<Models.Game> GetGameByIdAsync(int tournamentId, int gameId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/games/{gameId}");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/games/{gameId}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Models.Game>(json);
@@ -361,7 +372,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of Round POCOs.</returns>
         public async Task<List<Models.Round>> GetRoundsAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/rounds?cacheEligible=true");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/rounds?cacheEligible=true");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.Round>>(json) ?? new List<Models.Round>();
@@ -374,7 +385,7 @@ namespace MatchPlayApiWrapper
         /// <returns>A list of Standing POCOs.</returns>
         public async Task<List<Models.Standing>> GetStandingsAsync(int tournamentId)
         {
-            var response = await _httpClient.GetAsync($"/api/tournaments/{tournamentId}/standings");
+            var response = await _httpClient.GetAsync($"tournaments/{tournamentId}/standings");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Models.Standing>>(json) ?? new List<Models.Standing>();

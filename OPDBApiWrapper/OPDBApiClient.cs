@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using OPDBApiWrapper.Models;
 
@@ -10,7 +10,7 @@ namespace OPDBApiWrapper
     /// <summary>
     /// Client for accessing the OPDB API.
     /// </summary>
-    /// <seealso href="https://www.opdb.com/api/">OPDB API Documentation</seealso>
+    /// <seealso href="https://opdb.org/api">OPDB API Documentation</seealso>
     public class OPDBApiClient : IOPDBApiClient
     {
         /// <summary>
@@ -26,19 +26,17 @@ namespace OPDBApiWrapper
         /// <summary>
         /// The base URL for the OPDB API.
         /// </summary>
-        private const string BaseUrl = "https://opdb.com/api/";
+        private const string BaseUrl = "https://opdb.org/api/";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OPDBApiClient"/> class.
         /// </summary>
         /// <param name="apiToken">The OPDB API token.</param>
-        /// <param name="httpClient">Optional HttpClient instance.</param>
         /// <exception cref="ArgumentNullException">Thrown if apiToken is null.</exception>
-        public OPDBApiClient(string apiToken, HttpClient httpClient = null)
+        public OPDBApiClient(string apiToken)
         {
             _apiToken = apiToken ?? throw new ArgumentNullException(nameof(apiToken));
-            _httpClient = httpClient ?? new HttpClient();
-            _httpClient.BaseAddress = new Uri(BaseUrl);
+            _httpClient = new HttpClient { BaseAddress = new Uri(BaseUrl) };
         }
 
         /// <summary>

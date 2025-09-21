@@ -1,40 +1,31 @@
 # MatchPlayApiWrapper
 
-A .NET library for interacting with the Match Play API, providing models and a client for accessing tournament, player, game, and statistics data.
+[Match Play](https://app.matchplay.events/) has served as the one-stop solution for pinball tournaments. Over a dozen different tournament formats are available from simple brackets to pinball-specific formats like four-player elimination brackets and Flip Frenzies. Players can follow along from their mobile devices and view historical data for past events.
 
-## Features
-- Strongly-typed models for all major Match Play API entities
-- `MatchPlayApiClient` for easy API access
-- Async methods for retrieving tournaments, games, players, stats, and more
-- Organized code structure with each model in its own file
+MatchPlayApiWrapper is a C#, .net standard 2.0 class library that provides a wrapper for the MatchPlay API. This library is designed to simplify the interaction with the MatchPlay API by providing strongly typed models and a straightforward interface for making API calls. To use the MatchPlay API, a bearer token must be obtained.
 
-## Getting Started
-
-### Prerequisites
-- .NET Standard 2.0 or higher
-- Newtonsoft.Json
-
-### Installation
+## Installation
 Add the project to your solution and reference it in your application.
 
-### Usage Example
+## Usage
 ```csharp
 using MatchPlayApiWrapper;
 
-var client = new MatchPlayApiClient("https://api.matchplay.com", "YOUR_BEARER_TOKEN");
+var bearerToken = "YOUR_MATCHPLAY_BEARER_TOKEN";
+var client = new MatchPlayApiClient(bearerToken);
+
 var tournaments = await client.GetTournamentsAsync();
+
+var tournament = await client.GetTournamentByIdAsync(1234);
 ```
 
-## Project Structure
-- `MatchPlayApiClient.cs` — Main API client
-- `Models/` — All data models (Tournament, Game, Player, etc.)
-- Each model is in its own file for clarity and maintainability
+## API Reference
+See [Match Play API Documentation](https://api.matchplay.com/docs) for details on endpoints and parameters.
 
 ## Contributing
-Pull requests and issues are welcome! Please follow standard C# coding conventions.
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue for any enhancements or bug fixes.
 
 ## License
-MIT
 
-## API Reference
-See [Match Play API Documentation](https://api.matchplay.com/docs) for endpoint details.
+This project is licensed under the MIT License. See the LICENSE file for more details.
