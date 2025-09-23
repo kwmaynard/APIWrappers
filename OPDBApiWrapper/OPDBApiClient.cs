@@ -82,7 +82,7 @@ namespace OPDBApiWrapper
         /// <returns>A <see cref="Machine"/> object.</returns>
         public async Task<Machine> GetMachineByIpdbIdAsync(int ipdbId)
         {
-            var response = await _httpClient.GetAsync($"machines/ipdb/{ipdbId}&api_token={_apiToken}");
+            var response = await _httpClient.GetAsync($"machines/ipdb/{ipdbId}?api_token={_apiToken}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Machine>(json);
@@ -95,7 +95,7 @@ namespace OPDBApiWrapper
         /// <returns>A <see cref="Machine"/> object.</returns>
         public async Task<Machine> GetMachineByOpdbIdAsync(string opdbId)
         {
-            var response = await _httpClient.GetAsync($"machines/{opdbId}&api_token={_apiToken}");
+            var response = await _httpClient.GetAsync($"machines/{opdbId}?api_token={_apiToken}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Machine>(json);
@@ -121,7 +121,7 @@ namespace OPDBApiWrapper
         /// <returns>A list of <see cref="SimpleMachine"/> objects.</returns>
         public async Task<List<SimpleMachine>> GetTypeaheadSearchModelAsync(string searchTerm)
         {
-            var response = await _httpClient.GetAsync($"typeahead?q={searchTerm}");
+            var response = await _httpClient.GetAsync($"search/typeahead?q={searchTerm}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<SimpleMachine>>(json);
